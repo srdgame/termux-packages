@@ -12,6 +12,11 @@ TERMUX_PKG_CONFLICTS="termux-tools (<< 0.51)"
 termux_step_make() {
 	export ANDROID_HOME
 	GRADLE_OPTS=" -Dorg.gradle.daemon=false" ./gradlew :app:assembleRelease
+
+#	echo "GRADLE_OPTS=\" -Dorg.gradle.daemon=false\" ./gradlew :app:assembleRelease --console=plain --offline > /dev/null" > run.sh
+#	echo "echo DONE > done.result" >> run.sh
+#	bash run.sh &
+#	sleep 120
 }
 
 termux_step_make_install() {

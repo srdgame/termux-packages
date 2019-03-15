@@ -43,5 +43,5 @@ PACKAGES+=" jq" # Needed by bintray upload script.
 sudo DEBIAN_FRONTEND=noninteractive \
 	apt-get install -yq --no-install-recommends $PACKAGES
 
-sudo mkdir -p /data/data/com.termux/files/usr
+sudo mkdir -p /data/data/com.thingsroot.freeioe/files/usr
 sudo chown -R $(whoami) /data
