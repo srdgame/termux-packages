@@ -13,7 +13,7 @@ termux_step_post_make_install() {
     mkdir -p $TERMUX_PREFIX/etc/apk/
     echo $TERMUX_ARCH > $TERMUX_PREFIX/etc/apk/arch
 
-    echo "https://termux.net/apk/main" > $TERMUX_PREFIX/etc/apk/repositories
+    echo "http://termux.freeioe.org/apk/main" > $TERMUX_PREFIX/etc/apk/repositories
 }
 
 termux_step_post_massage() {

@@ -35,7 +35,7 @@ lib/libapt-inst.so
 "
 
 termux_step_post_make_install() {
-	printf "# The main termux repository:\ndeb https://termux.net stable main\n" > $TERMUX_PREFIX/etc/apt/sources.list
+	printf "# The main termux repository:\ndeb http://termux.freeioe.org stable main\n" > $TERMUX_PREFIX/etc/apt/sources.list
 	cp $TERMUX_PKG_BUILDER_DIR/trusted.gpg $TERMUX_PREFIX/etc/apt/
 	rm $TERMUX_PREFIX/include/apt-pkg -r
 
