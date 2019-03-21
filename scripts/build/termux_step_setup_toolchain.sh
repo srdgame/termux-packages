@@ -143,7 +143,7 @@ termux_step_setup_toolchain() {
 		sed -i "s/define __ANDROID_API__ __ANDROID_API_FUTURE__/define __ANDROID_API__ $TERMUX_PKG_API_LEVEL/" \
 			usr/include/android/api-level.h
 
-		$TERMUX_ELF_CLEANER usr/lib/*/*/*.so
+		$TERMUX_ELF_CLEANER usr/lib/*/*/*.so usr/lib/*/*.so
 
 		# zlib is really version 1.2.8 in the Android platform (at least
 		# starting from Android 5), not older as the NDK headers claim.
@@ -154,32 +154,6 @@ termux_step_setup_toolchain() {
 		unset file
 		grep -lrw $_TERMUX_TOOLCHAIN_TMPDIR/sysroot/usr/include/c++/v1 -e '<version>'   | xargs -n 1 sed -i 's/<version>/\"version\"/g'
 		mv $_TERMUX_TOOLCHAIN_TMPDIR $TERMUX_STANDALONE_TOOLCHAIN
-	fi
-
-	local _STL_LIBFILE_NAME=libc++_shared.so
-	if [ ! -f $TERMUX_PREFIX/lib/libstdc++.so ]; then
-		# Setup libc++_shared.so in $PREFIX/lib and libstdc++.so as a link to it,
-		# so that other C++ using packages links to it instead of the default android
-		# C++ library which does not support exceptions or STL:
-		# https://developer.android.com/ndk/guides/cpp-support.html
-		# We do however want to avoid installing this, to avoid problems where e.g.
-		# libm.so on some i686 devices links against libstdc++.so.
-		# The libc++_shared.so library will be packaged in the libc++ package
-		# which is part of the base Termux installation.
-		mkdir -p "$TERMUX_PREFIX/lib"
-		cd "$TERMUX_PREFIX/lib"
-
-		local _STL_LIBFILE=$TERMUX_STANDALONE_TOOLCHAIN/sysroot/usr/lib/${TERMUX_HOST_PLATFORM}/$_STL_LIBFILE_NAME
-
-		cp "$_STL_LIBFILE" .
-		$STRIP --strip-unneeded $_STL_LIBFILE_NAME
-		$TERMUX_ELF_CLEANER $_STL_LIBFILE_NAME
-		if [ $TERMUX_ARCH = "arm" ]; then
-			# Use a linker script to get libunwind.a.
-			echo 'INPUT(-lunwind -lc++_shared)' > libstdc++.so
-		else
-			ln -f $_STL_LIBFILE_NAME libstdc++.so
-		fi
 	fi
 
 	export PKG_CONFIG_LIBDIR="$TERMUX_PKG_CONFIG_LIBDIR"
