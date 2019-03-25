@@ -77,6 +77,9 @@ source scripts/build/termux_step_setup_toolchain.sh
 # Apply all *.patch files for the package. Not to be overridden by packages.
 source scripts/build/termux_step_patch_package.sh
 
+# Replace the data folder
+source scripts/build/termux_step_replace_data_folder.sh
+
 # Replace autotools build-aux/config.{sub,guess} with ours to add android targets.
 source scripts/build/termux_step_replace_guess_scripts.sh
 
@@ -155,6 +158,7 @@ source scripts/build/termux_step_finish_build.sh
 	termux_step_handle_hostbuild
 	termux_step_setup_toolchain
 	termux_step_patch_package
+	termux_step_replace_data_folder
 	termux_step_replace_guess_scripts
 	cd "$TERMUX_PKG_SRCDIR"
 	termux_step_pre_configure
