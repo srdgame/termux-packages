@@ -5,7 +5,7 @@ termux_step_start_build() {
 	TERMUX_STANDALONE_TOOLCHAIN="$TERMUX_COMMON_CACHEDIR/android5-${TERMUX_NDK_VERSION}-${TERMUX_ARCH}-${TERMUX_PKG_API_LEVEL}"
 	# Bump the below version if a change is made in toolchain setup to ensure
 	# that everyone gets an updated toolchain:
-	TERMUX_STANDALONE_TOOLCHAIN+="-v1"
+	TERMUX_STANDALONE_TOOLCHAIN+="-v2"
 
 	if [ -n "${TERMUX_PKG_BLACKLISTED_ARCHES:=""}" ] && [ "$TERMUX_PKG_BLACKLISTED_ARCHES" != "${TERMUX_PKG_BLACKLISTED_ARCHES/$TERMUX_ARCH/}" ]; then
 		echo "Skipping building $TERMUX_PKG_NAME for arch $TERMUX_ARCH"
@@ -42,15 +42,6 @@ termux_step_start_build() {
 				)
 			fi
 
-			if termux_download_deb $PKG-dev $DEP_ARCH $DEP_VERSION; then
-				(
-					cd $TERMUX_COMMON_CACHEDIR-$DEP_ARCH
-					ar x $PKG-dev_${DEP_VERSION}_${DEP_ARCH}.deb data.tar.xz
-					tar xf data.tar.xz --no-overwrite-dir -C /
-				)
-			else
-				echo "Download of $PKG-dev@$DEP_VERSION from $TERMUX_REPO_URL failed"
-			fi
 			mkdir -p /data/data/.built-packages
 			echo "$DEP_VERSION" > "/data/data/.built-packages/$PKG"
 		done<<<$(./scripts/buildorder.py -i "$TERMUX_PKG_BUILDER_DIR" $TERMUX_PACKAGES_DIRECTORIES || echo "ERROR")
