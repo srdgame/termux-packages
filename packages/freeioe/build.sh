@@ -15,5 +15,5 @@ termux_step_make() {
 
 termux_step_make_install() {
 	mkdir -p ${TERMUX_PREFIX}/ioe/freeioe
-	cp -R ./* ${TERMUX_PREFIX}/ioe/freeioe/
+	cp -fpR ./* ${TERMUX_PREFIX}/ioe/freeioe/
 }
